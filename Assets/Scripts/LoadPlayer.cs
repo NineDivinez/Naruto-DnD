@@ -41,7 +41,11 @@ public class LoadPlayer : MonoBehaviour
             System.IO.StreamReader file = new System.IO.StreamReader(playerLocation);
             while ((line = file.ReadLine()) != null)
             {
-                if (line.StartsWith("Level:"))
+                if (line.StartsWith("Name:"))
+                {
+                    player.playerName = (line.Remove(0, formats[0].Length));
+                }
+                else if (line.StartsWith("Level:"))
                 {
                     player.exp = int.Parse((line.Remove(0, formats[1].Length)));
                 }

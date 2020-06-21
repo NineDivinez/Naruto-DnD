@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using UnityEngine;
 
 public class Upgrades : MonoBehaviour
@@ -9,29 +10,52 @@ public class Upgrades : MonoBehaviour
     //Game Objects
     public PlayerStats player = new PlayerStats();
 
+    public GameObject newFeatScreen;
+    public GameObject newNatureScreen;
+    public GameObject newJutsuScreen;
 
-    void Start ()
+    void newChakraNature()
+    {
+
+    }
+
+    /// <summary>
+    /// A whole new feeeatttttt!
+    /// </summary>
+    void newFeat()
     {
         switch (player.specialization)
         {
             case "Summoner":
-                print("Test worked");
+                //Feats available
+                //
+
                 break;
             case "Taijutsu":
-                print("Test worked");
+                //Feats available
+
                 break;
             case "Medic":
-                print("Test worked");
+                //Feats available
+
                 break;
             case "Genjutsu":
-                print("Test worked");
+                //Feats available
+
                 break;
+
             case "Ninjutsu":
-                print("Test worked");
+                //Feats available
+
                 break;
+
             default:
                 print("Test failed");
                 break;
         }
+    }
+    public void newJutsu()
+    {
+        //just display something stating the player can choose however many new feats they are allowed.
     }
 }

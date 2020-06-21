@@ -198,21 +198,56 @@ public class RollForStats : MonoBehaviour
 
     public void saveRolls()
     {
-        if (errorMessage.text == "")
+        if (str.options[str.value].text != "Choose roll")
         {
-            player.strength = int.Parse(str.options[str.value].text);
-            player.intelligence = int.Parse(intel.options[intel.value].text);
-            player.dexterity = int.Parse(dex.options[dex.value].text);
-            player.constitution = int.Parse(con.options[con.value].text);
-            player.wisdom = int.Parse(wis.options[wis.value].text);
-            player.charisma = int.Parse(charis.options[charis.value].text);
-            stats.SetActive(false);
-            loadScreen.SetActive(true);
+            if (intel.options[intel.value].text != "Choose roll")
+            {
+                if (dex.options[dex.value].text != "Choose roll")
+                {
+                    if (con.options[con.value].text != "Choose roll")
+                    {
+                        if (wis.options[wis.value].text != "Choose roll")
+                        {
+                            if (charis.options[charis.value].text != "Choose roll")
+                            {
+                                if (errorMessage.text == "")
+                                {
+                                    player.strength = int.Parse(str.options[str.value].text);
+                                    player.intelligence = int.Parse(intel.options[intel.value].text);
+                                    player.dexterity = int.Parse(dex.options[dex.value].text);
+                                    player.constitution = int.Parse(con.options[con.value].text);
+                                    player.wisdom = int.Parse(wis.options[wis.value].text);
+                                    player.charisma = int.Parse(charis.options[charis.value].text);
+                                    stats.SetActive(false);
+                                    loadScreen.SetActive(true);
+                                }
+                                else
+                                {
+                                    errorMessage.text = "You cannot proceed, either two rolls are set as the same or you have not rolled!";
+                                }
+                            }
+                            else
+                                invalidInput();
+                        }
+                        else
+                            invalidInput();
+                    }
+                    else
+                        invalidInput();
+                }
+                else
+                    invalidInput();
+            }
+            else
+                invalidInput();
         }
         else
-        {
-            errorMessage.text = "You cannot proceed, either two rolls are set as the same or you have not rolled!";
-        }
+            invalidInput();
+    }
+
+    void invalidInput()
+    {
+        errorMessage.text = "Invalid selection";
     }
 
     public void cancel()

@@ -78,10 +78,18 @@ public class CharacterName : MonoBehaviour
     {
         if (!commandPromptContainer.activeInHierarchy)
         {
-            player.playerName = input.text;
-            bool playerFound = loadPlayer.load();
-            print(playerFound);
-            userInput(playerFound);
+            if (input.text.ToLower() == "dave")
+            {
+                errorMessage.text = "I'm sorry dave, I'm afraid I can't do that.";
+                print("I'm sorry dave, I'm afraid I can't do that.");
+            }
+            else
+            {
+                player.playerName = input.text;
+                bool playerFound = loadPlayer.load();
+                print(playerFound);
+                userInput(playerFound);
+            }
             sfx.Play();
         }
     }
@@ -91,34 +99,42 @@ public class CharacterName : MonoBehaviour
         errorMessage.text = "";
         if (input.text != "")
         {
-            print("Character name set to: " + input.text);
-            player.playerName = input.text;
-            player.exp = 1;
-            loadPlayer = loadSave.GetComponent<LoadPlayer>();
-
-            if (load)
+            if (input.text.ToLower() == "dave")
             {
-                bool playerFound = loadPlayer.load();
-                if (playerFound)
-                {
-                    questionOne.SetActive(false);
-                    loadOptions.SetActive(true);
-                }
-                else
-                {
-                    errorMessage.text = "Player file not found!";
-                }
+                errorMessage.text = "I'm sorry dave, I'm afraid I can't do that.";
+                print("I'm sorry dave, I'm afraid I can't do that.");
             }
             else
             {
-                if (!loadPlayer.load())
+                print("Character name set to: " + input.text);
+                player.playerName = input.text;
+                player.exp = 1;
+                loadPlayer = loadSave.GetComponent<LoadPlayer>();
+
+                if (load)
                 {
-                    questionOne.SetActive(false);
-                    createOptions.SetActive(true);
+                    bool playerFound = loadPlayer.load();
+                    if (playerFound)
+                    {
+                        questionOne.SetActive(false);
+                        loadOptions.SetActive(true);
+                    }
+                    else
+                    {
+                        errorMessage.text = "Player file not found!";
+                    }
                 }
                 else
                 {
-                    errorMessage.text = "Player already exists!";
+                    if (!loadPlayer.load())
+                    {
+                        questionOne.SetActive(false);
+                        createOptions.SetActive(true);
+                    }
+                    else
+                    {
+                        errorMessage.text = "Player already exists!";
+                    }
                 }
             }
         }

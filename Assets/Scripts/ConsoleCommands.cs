@@ -27,6 +27,7 @@ public class ConsoleCommands : MonoBehaviour
     public AudioSource turret3;
     public AudioSource turret4;
     public AudioSource turret5;
+    public AudioSource godMode;
 
     public LoadPlayer load = new LoadPlayer();
     public PlayerStats player = new PlayerStats();
@@ -58,7 +59,7 @@ public class ConsoleCommands : MonoBehaviour
                         commandEntry.ActivateInputField();
                 }
 
-                else if (Input.GetKey(KeyCode.Return))
+                else if (Input.GetKeyUp(KeyCode.Return))
                 {
                     commandEntered();
                     sfx.Play();
@@ -201,36 +202,51 @@ public void commandEntered()
             //kill
             else if (commandEntry.text.ToLower().StartsWith("kill") || commandEntry.text.ToLower().StartsWith("exterminate"))
             {
-                int audioChosen = Random.Range(1, 5);
+                int audioChosen = Random.Range(10, 50) /10;
+                print(audioChosen);
 
                 switch (audioChosen)
                 {
                     case 1:
                         turret1.Play();
-                        output.text = "Target aquired...";
+                        output.text = "Target aquired " + player.playerName + "...";
                         break;
 
                     case 2:
                         turret2.Play();
-                        output.text = "There you are...";
+                        output.text = "There you are " + player.playerName + "...";
                         break;
 
                     case 3:
                         turret3.Play();
-                        output.text = "Helloooo!";
+                        output.text = "Helloooo " + player.playerName + "!";
                         break;
 
                     case 4:
                         turret4.Play();
-                        output.text = "Target Lost...";
+                        output.text = "Target Lost " + player.playerName + "...";
                         break;
 
                     case 5:
                         turret5.Play();
-                        output.text = "Searching...";
+                        output.text = "Searching " + player.playerName + "...";
                         break;
                 }
                 commandEntry.text = "";
+            }
+
+            else if (commandEntry.text.ToLower().StartsWith("godmode"))
+            {
+                if (godMode.isPlaying)
+                {
+                    godMode.Stop();
+                    output.text = "";
+                }
+                else
+                {
+                    godMode.Play();
+                    output.text = "LOL you THOUGHT!";
+                }
             }
 
             //help
@@ -239,9 +255,10 @@ public void commandEntered()
                 //name, specialization, exp, chakra affinity, chakra nature levels, str, int, dex, con, wis, charis
                 output.text = ("Commands are as follows:\n" +
                     "Roll\n" +
+                    "Godmode" +
                     "Create <Name> <specialization> <EXP> <Chakra Affinity> <Chakra Nature levels (Fire,Water,Air,Earth,Lighting)> <Strength> <Intelligence> <Dexterity> <Constitution> <Wisdom> <Charisma>\n" +
                     "Load <player name>\n" +
-                    "Kill");
+                    "Kill <target>");
             }
 
             //Invalid
@@ -259,60 +276,4 @@ public void commandEntered()
         else
             return true;
     }
-                        /*
-                        //create shortcut
-                        else if (userInput.StartsWith("create") || userInput.StartsWith("Create"))
-                        {
-                            bool specificBuild = userInput.Any(c => char.IsDigit(c));
-                            if (specificBuild)
-                            {
-                                string[] entries = userInput.Split(' ');
-
-                                if (entries.Length == 11)
-                                {
-                                    Console.WriteLine("You have entered:");
-                                    foreach (string entered in entries)
-                                    {
-                                        Console.WriteLine(entered);
-                                    }
-                                    create(entries[1], Int32.Parse(entries[2]), entries[3], entries[4], Int32.Parse(entries[5]), Int32.Parse(entries[6]), Int32.Parse(entries[7]), Int32.Parse(entries[8]), Int32.Parse(entries[9]), Int32.Parse(entries[10]));
-                                }
-                                else if (entries.Length< 11)
-                                {
-                                    Console.WriteLine("You did not enter enough entries.");
-                                }
-                                else if (entries.Length > 11)
-                                {
-                                    Console.WriteLine("You entered too many entries.");
-                                }
-
-                                consoleClear();
-                            }
-                            else
-                            {
-                                string creationName = userInput.Remove(0, 7);
-create(creationName);
-                            }
-                        }
-
-                        //Load Player
-                        else if (userInput.StartsWith("load") || userInput.StartsWith("Load"))
-                        {
-                            string loadingName = userInput.Remove(0, 5);
-Console.WriteLine("Now searching for {0}...", loadingName);
-                            string directory = "../../Saves/";
-string playerLocation = directory + "/" + loadingName + ".save";
-bool detected = File.Exists(playerLocation);
-                            if (detected)
-                            {
-                                readAll(playerLocation);
-Console.WriteLine("Player data found!");
-                                consoleClear();
-                            }
-                            else
-                            {
-                                Console.WriteLine("Format error! Please try again!");
-                            }
-                        }
-                        */
 }

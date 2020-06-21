@@ -39,7 +39,10 @@ public class displayPlayer : MonoBehaviour
         {
             if (player.chakraNatures[i] != "")
             {
-                display.text += player.chakraNatures[i] + " Level: " + player.chakraLevels[i];
+                if (i < 3)
+                    display.text += "\n" + player.chakraNatures[i] + " Level: " + player.chakraLevels[i] + " ";
+                else
+                    display.text += "\n" + player.chakraNatures[i] + " Level: " + player.chakraLevels[i];
             }
         }
             

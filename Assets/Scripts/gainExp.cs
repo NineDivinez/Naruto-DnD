@@ -16,6 +16,9 @@ public class gainExp : MonoBehaviour
     public GameObject loadScreen;
     public AudioSource sfx;
     public GameObject commandPromptContainer;
+
+    public GameObject newChakraNature;
+    public GameObject newFeat;
     
     //Variables
     public int startingLevel = 0;
@@ -76,7 +79,7 @@ public class gainExp : MonoBehaviour
                 newLevel = i + 1;
             }
         }
-        player.exp = player.exp;
+        //player.exp = player.exp; //why did I do this..?
         player.playerLevel = newLevel;
 
         if (player.playerLevel > startingLevel)
@@ -99,25 +102,22 @@ public class gainExp : MonoBehaviour
                 if (player.playerLevel >= 3) //Checks if the player has reached level 3 as a result of the level up.
                 {
                     //The player can now customize their specialization further by picking new feats unique to their character.
-                    //This is the first level they can try to learn a new chakra nature. Bring up a screen asking if they wish to try to learn a new natue.
+                    newFeat.SetActive(newFeat.activeInHierarchy);
                 }
             }
 
-            if (player.playerLevel % 3 == 0) //Checks if the level is divisible by 3 to allow the player to choose if they want to either learn a new chakra nature or level up an existing one other than the primary
+            if (player.playerLevel % 6 == 0) //Checks if the level is divisible by 3 to allow the player to choose if they want to either learn a new chakra nature or level up an existing one other than the primary
             {
                 //Bring up a screen asking if they wish to try to learn a new natue.
+                newChakraNature.SetActive(newChakraNature.activeInHierarchy);
             }
         }
         
 
         //The last thing to happen:
+
         startingLevel = player.playerLevel;
         //compares previous level to new level.  If changed, update the previous level to the new and check if the player gains anything new.
         //if true, then give player their options!
-    }
-
-    void learnNewNature()
-    {
-
     }
 }
