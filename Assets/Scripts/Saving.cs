@@ -37,20 +37,30 @@ public class Saving : MonoBehaviour
     {
         errorMessage.text = "";
         string saveDirectory;
-        string saveFile = player.playerName + ".save";
-        if (!Directory.Exists("Game Saves"))
+        bool playerFound = false;
+
+        if (player.playerName != "")
         {
-            System.IO.Directory.CreateDirectory("Game Saves");
+            string saveFile = player.playerName + ".save";
+            if (!Directory.Exists("Game Saves"))
+            {
+                System.IO.Directory.CreateDirectory("Game Saves");
+            }
+            print("Saving character...");
+            saveDirectory = Path.Combine("Game Saves", saveFile);
+
+            string[] format = { formats[0] + player.playerName, formats[1] + player.exp, formats[2] + player.specialization, formats[3] + player.chakraLevels[0] + "," + player.chakraLevels[1] + "," + player.chakraLevels[2] + "," + player.chakraLevels[3] + "," + player.chakraLevels[4], formats[4] + player.strength, formats[5] + player.intelligence, formats[6] + player.dexterity, formats[7] + player.constitution, formats[8] + player.wisdom, formats[9] + player.charisma, formats[10] + player.chakraAffinity };
+            System.IO.File.WriteAllLines(saveDirectory, format);
+
+            load = load.GetComponent<LoadPlayer>();
+            playerFound = load.load();
         }
-        print("Saving character...");
-        saveDirectory = Path.Combine("Game Saves", saveFile);
+        else if (player.playerName == "" && !justSave)
+        {
+            Application.Quit();
+        }
 
-        string[] format = { formats[0] + player.playerName, formats[1] + player.exp, formats[2] + player.specialization, formats[3] + player.chakraLevels[0] + "," + player.chakraLevels[1] + "," + player.chakraLevels[2] + "," + player.chakraLevels[3] + "," + player.chakraLevels[4], formats[4] + player.strength, formats[5] + player.intelligence, formats[6] + player.dexterity, formats[7] + player.constitution, formats[8] + player.wisdom, formats[9] + player.charisma, formats[10] + player.chakraAffinity };
-        System.IO.File.WriteAllLines(saveDirectory, format);
         
-        load = load.GetComponent<LoadPlayer>();
-        bool playerFound = load.load();
-
         if (playerFound && !justSave)
         {
             Application.Quit();
@@ -61,7 +71,7 @@ public class Saving : MonoBehaviour
         }
         else
         {
-            errorMessage.text = "There was an error saving the game....";
+            errorMessage.text = "There was an error saving the character....";
         }
     }
 
