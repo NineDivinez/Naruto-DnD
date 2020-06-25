@@ -13,7 +13,7 @@ public class PlayerStats : MonoBehaviour
     public string hitDice = "";
     public string[] chakraNatures = { };
     public string chakraAffinity = "";
-    public int[] chakraLevels = { };
+    public int[] chakraLevels = { 0, 0, 0, 0, 0 };
     public int exp;
     public int strength;
     public int intelligence;
@@ -22,13 +22,10 @@ public class PlayerStats : MonoBehaviour
     public int wisdom;
     public int charisma;
 
-    void Start()
+    public override bool Equals(object obj)
     {
-
-    }
-
-    void Update()
-    {
-
+        return obj is PlayerStats stats &&
+               base.Equals(obj) &&
+               EqualityComparer<int[]>.Default.Equals(chakraLevels, stats.chakraLevels);
     }
 }

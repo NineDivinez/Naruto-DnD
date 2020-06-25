@@ -103,10 +103,9 @@ public void commandEntered()
                     }
                 }
 
-                if (dice != null)
+                if (dice != null || dice != 0)
                 {
                     int[] rolled = new int[times];
-                    int timesRan = 0;
                     for (int i = 0; i <= times - 1; i++)
                         rolled[i] = Random.Range(1, dice) + mods;
 
@@ -196,6 +195,14 @@ public void commandEntered()
                         homeScreen.SetActive(false);
                         loadScreen.SetActive(true);
                     }
+                    else
+                    {
+                        output.text = "The player could not be found.";
+                    }
+                }
+                else
+                {
+                    output.text = "This command cannot be performed at the current state.  Please exit character creation and try again.";
                 }
             }
 

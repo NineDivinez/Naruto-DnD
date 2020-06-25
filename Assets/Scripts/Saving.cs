@@ -63,6 +63,7 @@ public class Saving : MonoBehaviour
         
         if (playerFound && !justSave)
         {
+            save(false);
             Application.Quit();
         }
         else if (justSave && playerFound)

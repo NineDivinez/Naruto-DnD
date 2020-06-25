@@ -25,7 +25,7 @@ public class displayPlayer : MonoBehaviour
         display.text = "Name:              " + player.playerName + "\n" +
                         "Exp:              " + player.exp + "\n" +
                         "Level:            " + player.playerLevel + "\n" +
-                        "Job:              " + player.specialization + "\n" +
+                        "Specialization:   " + player.specialization + "\n" +
                         "Strength:         " + player.strength + "\n" +
                         "Intelligence:     " + player.intelligence + "\n" +
                         "Dexterity:        " + player.dexterity + "\n" +
