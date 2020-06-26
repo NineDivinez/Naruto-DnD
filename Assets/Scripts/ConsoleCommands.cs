@@ -262,6 +262,7 @@ public void commandEntered()
                 }
             }
 
+            //Directory
             else if (commandEntry.text.ToLower().StartsWith("directory"))
             {
                 if (commandEntry.text.Length > 9)
@@ -284,7 +285,7 @@ public void commandEntered()
                             else
                             {
                                 errorMessage.text = "There was an error displaying the directory...";
-                                output.text = "Player " + directoryName + ".save" + exists(playerFound) + "\n\nPlayer Name: " + directoryName + "\n\nGame Save Location: " + saveLocation + exists(Directory.Exists(saveFile));
+                                output.text = "Player " + directoryName + ".save" + exists(playerFound) + "\n\nPlayer Name: " + directoryName + "\n\nDirectory:   " + saveLocation + exists(Directory.Exists(saveLocation));
                             }
                         }
                         else
