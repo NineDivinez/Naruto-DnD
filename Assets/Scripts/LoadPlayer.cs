@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System;
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class LoadPlayer : MonoBehaviour
 {
@@ -27,7 +24,7 @@ public class LoadPlayer : MonoBehaviour
 
     public bool load()
     {
-        string directory = "Game Saves";
+        string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
         string playerLocation = "";
         playerLocation = Path.Combine(directory, player.playerName + ".save");
         bool detected = System.IO.File.Exists(playerLocation);

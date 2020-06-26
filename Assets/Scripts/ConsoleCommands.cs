@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -189,7 +187,13 @@ public void commandEntered()
                 if (!antiCreateLoad.activeInHierarchy)
                 {
                     player.playerName = commandEntry.text.Remove(0, 5);
-                    if (load.load())
+
+                    string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
+                    string playerLocation = "";
+                    playerLocation = Path.Combine(directory, player.playerName + ".save");
+                    bool playerDetected = System.IO.File.Exists(playerLocation);
+
+                    if (playerDetected)
                     {
                         output.text = (player.playerName + " loaded successfully.");
                         homeScreen.SetActive(false);
@@ -197,7 +201,8 @@ public void commandEntered()
                     }
                     else
                     {
-                        output.text = "The player could not be found.";
+                        errorMessage.text = "The player could not be found.";
+                        output.text = directory + exists(playerDetected);
                     }
                 }
                 else
@@ -216,7 +221,7 @@ public void commandEntered()
                 {
                     case 1:
                         turret1.Play();
-                        output.text = "Target aquired " + player.playerName + "...";
+                        output.text = "Target " + player.playerName + " aquired...";
                         break;
 
                     case 2:
@@ -231,17 +236,18 @@ public void commandEntered()
 
                     case 4:
                         turret4.Play();
-                        output.text = "Target Lost " + player.playerName + "...";
+                        output.text = "Target " + player.playerName + " Lost ...";
                         break;
 
                     case 5:
                         turret5.Play();
-                        output.text = "Searching " + player.playerName + "...";
+                        output.text = "Searching for " + player.playerName + "...";
                         break;
                 }
                 commandEntry.text = "";
             }
 
+            //Godmode
             else if (commandEntry.text.ToLower().StartsWith("godmode"))
             {
                 if (godMode.isPlaying)
@@ -256,6 +262,48 @@ public void commandEntered()
                 }
             }
 
+            else if (commandEntry.text.ToLower().StartsWith("directory"))
+            {
+                if (commandEntry.text.Length > 9)
+                {
+                    string directoryName = commandEntry.text.Remove(0, 10);
+                    string saveLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10");
+                    saveLocation = Path.Combine(saveLocation, "NarutoDnD");
+                    saveLocation = Path.Combine(saveLocation, "Game Saves");
+                    if (Directory.Exists(saveLocation))
+                    {
+                        errorMessage.text = "";
+                        
+
+                        if (directoryName != "")
+                        {
+                            string saveFile = Path.Combine(saveLocation, directoryName + ".save");
+                            bool playerFound = System.IO.File.Exists(saveFile);
+                            if (playerFound)
+                                output.text = saveFile;
+                            else
+                            {
+                                errorMessage.text = "There was an error displaying the directory...";
+                                output.text = "Player " + directoryName + ".save" + exists(playerFound) + "\n\nPlayer Name: " + directoryName + "\n\nGame Save Location: " + saveLocation + exists(playerFound);
+                            }
+                        }
+                        else
+                        {
+                            errorMessage.text = "Error displaying directory!";
+                            output.text = "You must provide a save to check the directory for.";
+                        }
+                    }
+                }
+                else
+                {
+                    string directoryName = commandEntry.text.Remove(0, 9);
+                    string saveLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves" + "/" + directoryName + ".save");
+                    string saveFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
+                    output.text = directoryName + ".save" + exists(Directory.Exists(saveLocation)) + "\n" + saveFolder + exists(Directory.Exists(saveFolder));
+                    errorMessage.text = "Command is invalid!";
+                }
+            }
+
             //help
             else if (commandEntry.text.ToLower().StartsWith("help"))
             {
@@ -265,7 +313,8 @@ public void commandEntered()
                     "Godmode" +
                     "Create <Name> <specialization> <EXP> <Chakra Affinity> <Chakra Nature levels (Fire,Water,Air,Earth,Lighting)> <Strength> <Intelligence> <Dexterity> <Constitution> <Wisdom> <Charisma>\n" +
                     "Load <player name>\n" +
-                    "Kill <target>");
+                    "Kill <target>\n" + 
+                    "Directory (Displays the current save directory)");
             }
 
             //Invalid
@@ -274,6 +323,11 @@ public void commandEntered()
                 errorMessage.text = ("Error! Invalid command.  For a list of commands, please enter help.");
             }
         }
+    }
+
+    public string exists(bool passedBool) //converts true/false to yes or no
+    {
+        return passedBool ? " does exist." : " does not exist.";
     }
 
     bool entryCheck(string entry)

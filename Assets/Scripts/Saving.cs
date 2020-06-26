@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
-using System.Runtime.InteropServices;
+using System;
+using Random = UnityEngine.Random;
 
 public class Saving : MonoBehaviour
 {
@@ -42,12 +41,15 @@ public class Saving : MonoBehaviour
         if (player.playerName != "")
         {
             string saveFile = player.playerName + ".save";
-            if (!Directory.Exists("Game Saves"))
+            string saveLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
+
+
+            if (!Directory.Exists(saveLocation))
             {
-                System.IO.Directory.CreateDirectory("Game Saves");
+                System.IO.Directory.CreateDirectory(saveLocation);
             }
-            print("Saving character...");
-            saveDirectory = Path.Combine("Game Saves", saveFile);
+            errorMessage.text = ("Saving character...");
+            saveDirectory = Path.Combine(saveLocation, saveFile);
 
             string[] format = { formats[0] + player.playerName, formats[1] + player.exp, formats[2] + player.specialization, formats[3] + player.chakraLevels[0] + "," + player.chakraLevels[1] + "," + player.chakraLevels[2] + "," + player.chakraLevels[3] + "," + player.chakraLevels[4], formats[4] + player.strength, formats[5] + player.intelligence, formats[6] + player.dexterity, formats[7] + player.constitution, formats[8] + player.wisdom, formats[9] + player.charisma, formats[10] + player.chakraAffinity };
             System.IO.File.WriteAllLines(saveDirectory, format);
@@ -80,12 +82,15 @@ public class Saving : MonoBehaviour
     {
         string saveDirectory;
         string saveFile = "MysteryCharacter.save";
-        if (!Directory.Exists("Game Saves"))
+        string saveLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
+
+
+        if (!Directory.Exists(saveLocation))
         {
-            System.IO.Directory.CreateDirectory("Game Saves");
+            System.IO.Directory.CreateDirectory(saveLocation);
         }
         print("Saving character...");
-        saveDirectory = Path.Combine("Game Saves", saveFile);
+        saveDirectory = Path.Combine(saveLocation, saveFile);
 
         string[] format = new string[11];
 
