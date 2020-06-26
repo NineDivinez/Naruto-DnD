@@ -170,12 +170,17 @@ public void commandEntered()
                                 output.text = (player.playerName + " save successfully.");
                                 homeScreen.SetActive(false);
                                 loadScreen.SetActive(true);
+                                if (!load.load())
+                                {
+                                    errorMessage.text = "Save Failed";
+                                    output.text = "Save failed.  Try relaunching as administrator?";
+                                }
                             }
                         }
                     }
                     else
                     {
-                        errorMessage.text = "You entered too many entries for the command.  Please try again.";
+                        errorMessage.text = "You gave too many entries for the command.  Please try again.";
                     }
                 }
             }
@@ -202,7 +207,7 @@ public void commandEntered()
                     else
                     {
                         errorMessage.text = "The player could not be found.";
-                        output.text = directory + exists(playerDetected);
+                        output.text = directory + exists(playerDetected) + "\n\nDoes the toolkit have admin permissions?";
                     }
                 }
                 else
@@ -285,7 +290,7 @@ public void commandEntered()
                             else
                             {
                                 errorMessage.text = "There was an error displaying the directory...";
-                                output.text = "Player " + directoryName + ".save" + exists(playerFound) + "\n\nPlayer Name: " + directoryName + "\n\nDirectory:   " + saveLocation + exists(Directory.Exists(saveLocation));
+                                output.text = "Player " + directoryName + ".save" + exists(playerFound) + "\n\nPlayer Name: " + directoryName + "\n\nDirectory:   " + saveLocation + exists(Directory.Exists(saveLocation)) + "\n\nDoes the toolkit have admin permissions?";
                             }
                         }
                         else
@@ -310,12 +315,12 @@ public void commandEntered()
             {
                 //name, specialization, exp, chakra affinity, chakra nature levels, str, int, dex, con, wis, charis
                 output.text = ("Commands are as follows:\n" +
-                    "Roll\n" +
-                    "Godmode" +
+                    "Roll <sides> <amount> (Rolls die based on the sides the specified times.\n" +
+                    "Godmode (Enables godmode)\n" +
                     "Create <Name> <specialization> <EXP> <Chakra Affinity> <Chakra Nature levels (Fire,Water,Air,Earth,Lighting)> <Strength> <Intelligence> <Dexterity> <Constitution> <Wisdom> <Charisma>\n" +
-                    "Load <player name>\n" +
+                    "Load <Name> (quickly loads the name)\n" +
                     "Kill <target>\n" + 
-                    "Directory (Displays the current save directory)");
+                    "Directory <Name> (Displays the directory of the name entered.)");
             }
 
             //Invalid
