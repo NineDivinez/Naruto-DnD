@@ -284,7 +284,7 @@ public void commandEntered()
                             else
                             {
                                 errorMessage.text = "There was an error displaying the directory...";
-                                output.text = "Player " + directoryName + ".save" + exists(playerFound) + "\n\nPlayer Name: " + directoryName + "\n\nGame Save Location: " + saveLocation + exists(playerFound);
+                                output.text = "Player " + directoryName + ".save" + exists(playerFound) + "\n\nPlayer Name: " + directoryName + "\n\nGame Save Location: " + saveLocation + exists(Directory.Exists(saveFile));
                             }
                         }
                         else
