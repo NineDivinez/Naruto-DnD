@@ -163,8 +163,8 @@ public void commandEntered()
                             else if (chakraLevels[i].ToLower().StartsWith("water"))
                             {
                                 player.chakraLevels[1] = Int32.Parse(chakraLevels[i].Remove(0, 6));
-                                
-                                
+
+
                                 print((chakraLevels[i]));
                                 print(Int32.Parse(chakraLevels[i].Remove(0, 6)));
                                 print(player.chakraLevels[1]);
@@ -224,13 +224,12 @@ public void commandEntered()
                 //create a check to ensure the user cannot perform this command when in the middle of creating. Use a method for this that returns true or false.
                 if (!antiCreateLoad.activeInHierarchy)
                 {
-                    
+
 
                     string loadName = commandEntry.text.Remove(0, 5);
 
                     string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
-                    string playerLocation = "";
-                    playerLocation = Path.Combine(directory, loadName + ".save");
+                    string playerLocation = Path.Combine(directory, loadName + ".save");
                     bool playerDetected = System.IO.File.Exists(playerLocation);
 
                     if (playerDetected)
@@ -252,6 +251,23 @@ public void commandEntered()
                 {
                     addOutput("This command cannot be performed at the current state.  Please exit character creation and try again.");
                 }
+            }
+
+            //list
+            else if (commandEntry.text.ToLower().StartsWith("list"))
+            {
+                output.text = "All save files that could be located:";
+                DirectoryInfo directory = new DirectoryInfo(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves"));
+                FileInfo[] Files = directory.GetFiles("*.save"); //Getting save files
+                string str = "";
+                foreach (FileInfo file in Files)
+                {
+                    if (str == "")
+                        str = file.Name;
+                    else
+                        str += $"\n {file.Name}";
+                }
+                addOutput(str);
             }
 
             //delete
@@ -283,7 +299,7 @@ public void commandEntered()
             //kill
             else if (commandEntry.text.ToLower().StartsWith("kill") || commandEntry.text.ToLower().StartsWith("exterminate"))
             {
-                int audioChosen = Random.Range(10, 50) /10;
+                int audioChosen = Random.Range(10, 50) / 10;
                 print(audioChosen);
 
                 switch (audioChosen)
@@ -343,7 +359,7 @@ public void commandEntered()
                     if (Directory.Exists(saveLocation))
                     {
                         errorMessage.text = "";
-                        
+
 
                         if (directoryName != "")
                         {
@@ -391,6 +407,7 @@ public void commandEntered()
                     "Kill <target>\n\n" +
                     "Directory <Name> (Displays the directory of the name entered.)\n\n" +
                     "Delete <character>\n\n" +
+                    "list (Lists all saved characters)\n\n" +
                     "help image (instructions on how to upload your own image)");
                 }
                 else if (commandEntry.text.Remove(0, 5).ToLower() == "image")
