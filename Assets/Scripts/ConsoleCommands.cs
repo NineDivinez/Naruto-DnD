@@ -123,6 +123,7 @@ public void commandEntered()
                 }
                 else
                 {
+                    addOutput("Command failed: Unknown error!");
                     errorMessage.text = "Command failed.";
                 }
             }
@@ -134,7 +135,6 @@ public void commandEntered()
                 //create test tester 9000 TestingPowers 1,0,0,0,0 10 10 10 10 10 10
                 if (!antiCreateLoad.activeInHierarchy)
                 {
-                    int numberToCreate = 1;
                     //name, specialization, exp, chakra affinity, chakra nature levels, str, int, dex, con, wis, charis
                     string input = commandEntry.text.Remove(0, 7);
                     string[] entries = input.Split(' ');
@@ -144,14 +144,47 @@ public void commandEntered()
                     }
                     else if (entries.Length == 11)
                     {
-                        string[] chakraLevels = (entries[5].Split(',')); //Still need to convert this and assign them to their respective chakra nature
-
-                        for (int i = 0; i < chakraLevels.Length; i++)
+                        string[] chakraLevels = { "", "", "", "", "" };
+                        if (entries[4].Contains(","))
                         {
-                            player.chakraLevels[i] = Int32.Parse(chakraLevels[i]);
+                            chakraLevels = (entries[4].Split(','));
+                        }
+                        else
+                        {
+                            chakraLevels[0] = (entries[4]);
                         }
 
-                        //assign the chakra natures based on the levels.
+                        for (int i = 0; i < chakraLevels.Length; i++) //assigns the levels to the respective chakra nature.
+                        {
+                            if (chakraLevels[i].ToLower().StartsWith("fire"))
+                            {
+                                player.chakraLevels[0] = Int32.Parse(chakraLevels[i].Remove(0, 5));
+                            }
+                            else if (chakraLevels[i].ToLower().StartsWith("water"))
+                            {
+                                player.chakraLevels[1] = Int32.Parse(chakraLevels[i].Remove(0, 6));
+                                
+                                
+                                print((chakraLevels[i]));
+                                print(Int32.Parse(chakraLevels[i].Remove(0, 6)));
+                                print(player.chakraLevels[1]);
+
+
+                            }
+                            else if (chakraLevels[i].ToLower().StartsWith("air"))
+                            {
+                                player.chakraLevels[2] = Int32.Parse(chakraLevels[i].Remove(0, 4));
+                            }
+                            else if (chakraLevels[i].ToLower().StartsWith("earth"))
+                            {
+                                player.chakraLevels[3] = Int32.Parse(chakraLevels[i].Remove(0, 6));
+                            }
+                            else if (chakraLevels[i].ToLower().StartsWith("lightning"))
+                            {
+                                player.chakraLevels[4] = Int32.Parse(chakraLevels[i].Remove(0, 10));
+                            }
+                        }
+
                         bool failed = true;
                         for (int i = 0; i < entries.Length; i++)
                         {
@@ -162,18 +195,18 @@ public void commandEntered()
                         {
                             player.playerName = entries[0]; player.specialization = entries[1]; player.exp = Int32.Parse(entries[2]); player.chakraAffinity = entries[3];
                             player.strength = Int32.Parse(entries[5]); player.intelligence = Int32.Parse(entries[6]); player.dexterity = Int32.Parse(entries[7]);
-                            player.wisdom = Int32.Parse(entries[8]); player.charisma = Int32.Parse(entries[9]);
+                            player.constitution = Int32.Parse(entries[8]); player.wisdom = Int32.Parse(entries[9]); player.charisma = Int32.Parse(entries[10]);
 
                             if (!load.load())
                             {
                                 saveCharacter.save(true);
-                                output.text = (player.playerName + " save successfully.");
+                                addOutput(player.playerName + " save successfully.");
                                 homeScreen.SetActive(false);
                                 loadScreen.SetActive(true);
                                 if (!load.load())
                                 {
                                     errorMessage.text = "Save Failed";
-                                    output.text = "Save failed.  Try relaunching as administrator?";
+                                    addOutput("Save failed.  Try relaunching as administrator?");
                                 }
                             }
                         }
@@ -191,28 +224,59 @@ public void commandEntered()
                 //create a check to ensure the user cannot perform this command when in the middle of creating. Use a method for this that returns true or false.
                 if (!antiCreateLoad.activeInHierarchy)
                 {
-                    player.playerName = commandEntry.text.Remove(0, 5);
+                    
+
+                    string loadName = commandEntry.text.Remove(0, 5);
 
                     string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
                     string playerLocation = "";
-                    playerLocation = Path.Combine(directory, player.playerName + ".save");
+                    playerLocation = Path.Combine(directory, loadName + ".save");
                     bool playerDetected = System.IO.File.Exists(playerLocation);
 
                     if (playerDetected)
                     {
-                        output.text = (player.playerName + " loaded successfully.");
+                        player.playerName = loadName;
+                        load.load();
+                        addOutput(player.playerName + " loaded successfully.");
                         homeScreen.SetActive(false);
                         loadScreen.SetActive(true);
                     }
                     else
                     {
-                        errorMessage.text = "The player could not be found.";
-                        output.text = directory + exists(playerDetected) + "\n\nDoes the toolkit have admin permissions?";
+                        errorMessage.text = "Checked if the save went through... The player could not be found.";
+                        addOutput($"Could not find character {player.playerName}\n");
+                        addOutput(directory + exists(playerDetected) + "\n\nDoes the toolkit have admin permissions?");
                     }
                 }
                 else
                 {
-                    output.text = "This command cannot be performed at the current state.  Please exit character creation and try again.";
+                    addOutput("This command cannot be performed at the current state.  Please exit character creation and try again.");
+                }
+            }
+
+            //delete
+            else if (commandEntry.text.ToLower().StartsWith("delete"))
+            {
+                string deleteCharacter = commandEntry.text.Remove(0, 7);
+                string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
+                string playerLocation = "";
+                playerLocation = Path.Combine(directory, deleteCharacter + ".save");
+
+                if (player.playerName.ToLower() == deleteCharacter.ToLower())
+                {
+                    addOutput("You cannot delete a character that is currently loaded.");
+                }
+                else
+                {
+                    if (System.IO.File.Exists(playerLocation))
+                    {
+                        File.Delete(playerLocation);
+                        addOutput($"Now deleting {deleteCharacter}");
+                    }
+                    else
+                    {
+                        addOutput("The file you want to delete already does not exist.");
+                    }
                 }
             }
 
@@ -286,7 +350,9 @@ public void commandEntered()
                             string saveFile = Path.Combine(saveLocation, directoryName + ".save");
                             bool playerFound = System.IO.File.Exists(saveFile);
                             if (playerFound)
-                                output.text = saveFile;
+                            {
+                                output.text = ($"The save file is located at:\n\n {saveFile}");
+                            }
                             else
                             {
                                 errorMessage.text = "There was an error displaying the directory...";
@@ -296,7 +362,7 @@ public void commandEntered()
                         else
                         {
                             errorMessage.text = "Error displaying directory!";
-                            output.text = "You must provide a save to check the directory for.";
+                            addOutput("You must provide a save to check the directory for.");
                         }
                     }
                 }
@@ -314,13 +380,47 @@ public void commandEntered()
             else if (commandEntry.text.ToLower().StartsWith("help"))
             {
                 //name, specialization, exp, chakra affinity, chakra nature levels, str, int, dex, con, wis, charis
-                output.text = ("Commands are as follows:\n" +
-                    "Roll <sides> <amount> (Rolls die based on the sides the specified times.\n" +
-                    "Godmode (Enables godmode)\n" +
-                    "Create <Name> <specialization> <EXP> <Chakra Affinity> <Chakra Nature levels (Fire,Water,Air,Earth,Lighting)> <Strength> <Intelligence> <Dexterity> <Constitution> <Wisdom> <Charisma>\n" +
-                    "Load <Name> (quickly loads the name)\n" +
-                    "Kill <target>\n" + 
-                    "Directory <Name> (Displays the directory of the name entered.)");
+
+                if (commandEntry.text.Length == 4)
+                {
+                    output.text = ("Commands are as follows:\n" +
+                    "Roll <sides> <amount> (Rolls die based on the sides the specified times.\n\n" +
+                    "Godmode (Enables godmode)\n\n" +
+                    "Create <Name> <specialization> <EXP> <Chakra Affinity> <Chakra Nature levels (Fire:level,Water:level,Air:level,Earth:level,Lighting:level)> <Strength> <Intelligence> <Dexterity> <Constitution> <Wisdom> <Charisma>\n\n" +
+                    "Load <Name> (quickly loads the name)\n\n" +
+                    "Kill <target>\n\n" +
+                    "Directory <Name> (Displays the directory of the name entered.)\n\n" +
+                    "Delete <character>\n\n" +
+                    "help image (instructions on how to upload your own image)");
+                }
+                else if (commandEntry.text.Remove(0, 5).ToLower() == "image")
+                {
+                    output.text = ("To add an image for your character, enter the command: directory <name> and go to that directory.\n\n" +
+                        "If the image you have is not already in a jpg format, please convert it as such and rename the image to your character name.\n\n" +
+                        "After that, place the image in the directory.  You may now reload your character with the new image!");
+                }
+                else
+                {
+                    output.text = ("Command not recognized.  Performing help command...\n\n" +
+                    "Commands are as follows:\n" +
+                    "Roll <sides> <amount> (Rolls die based on the sides the specified times.\n\n" +
+                    "Godmode (Enables godmode)\n\n" +
+                    "Create <Name> <specialization> <EXP> <Chakra Affinity> <Chakra Nature levels (Fire:level,Water:level,Air:level,Earth:level,Lighting:level)> <Strength> <Intelligence> <Dexterity> <Constitution> <Wisdom> <Charisma>\n\n" +
+                    "Load <Name> (quickly loads the name)\n\n" +
+                    "Kill <target>\n\n" +
+                    "Directory <Name> (Displays the directory of the name entered.)\n\n" +
+                    "Delete <character>\n\n" +
+                    "help image (instructions on how to upload your own image)");
+                }
+            }
+
+            //Testing scrolling
+            else if (commandEntry.text.ToLower().StartsWith("test"))
+            {
+                for (int i = 0; i <= 100; i++)
+                {
+                    addOutput("This is a test!");
+                }
             }
 
             //Invalid
@@ -334,6 +434,18 @@ public void commandEntered()
     public string exists(bool passedBool) //converts true/false to yes or no
     {
         return passedBool ? " does exist." : " does not exist.";
+    }
+
+    public void addOutput(string toOutput)
+    {
+        if (output.text == "")
+        {
+            output.text = toOutput;
+        }
+        else
+        {
+            output.text += $"\n\n-----------------------------------------------------------------------\n\n{toOutput}";
+        }
     }
 
     bool entryCheck(string entry)

@@ -12,6 +12,6 @@ public class PreventKey : MonoBehaviour
     void OnGUI()
     {
         for (int i = 0; i < fields.Length; i++)
-            fields[i].text = Regex.Replace(fields[i].text, @"[^a-zA-Z0-9, ]", "");
+            fields[i].text = Regex.Replace(fields[i].text, @"[^a-zA-Z0-9,: ]", "");
     }
 }
