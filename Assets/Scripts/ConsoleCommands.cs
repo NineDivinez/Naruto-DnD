@@ -162,7 +162,7 @@ public void commandEntered()
                         {
                             player.playerName = entries[0]; player.specialization = entries[1]; player.exp = Int32.Parse(entries[2]); player.chakraAffinity = entries[3];
                             player.strength = Int32.Parse(entries[5]); player.intelligence = Int32.Parse(entries[6]); player.dexterity = Int32.Parse(entries[7]);
-                            player.wisdom = Int32.Parse(entries[8]); player.charisma = Int32.Parse(entries[9]);
+                            player.constitution = Int32.Parse(entries[8]); player.wisdom = Int32.Parse(entries[9]); player.charisma = Int32.Parse(entries[10]);
 
                             if (!load.load())
                             {
@@ -315,7 +315,7 @@ public void commandEntered()
             {
                 //name, specialization, exp, chakra affinity, chakra nature levels, str, int, dex, con, wis, charis
                 output.text = ("Commands are as follows:\n" +
-                    "Roll <sides> <amount> (Rolls die based on the sides the specified times.\n" +
+                    "Roll <sides> <amount> (Rolls die based on the sides the specified times.)\n" +
                     "Godmode (Enables godmode)\n" +
                     "Create <Name> <specialization> <EXP> <Chakra Affinity> <Chakra Nature levels (Fire,Water,Air,Earth,Lighting)> <Strength> <Intelligence> <Dexterity> <Constitution> <Wisdom> <Charisma>\n" +
                     "Load <Name> (quickly loads the name)\n" +
