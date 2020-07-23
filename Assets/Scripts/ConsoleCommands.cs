@@ -6,6 +6,16 @@ using Random = UnityEngine.Random;
 
 public class ConsoleCommands : MonoBehaviour
 {
+    
+    /*
+     Notes for future updates:
+    edit the create command to use the new method to roll stats if no stats are put in.
+    allow edit command to randomly select a chakra nature and/or specialization
+    try to make the create command accept just a name and randomly pick things for the rest!
+    Make more changes to the help command so you can get in dept details on all commands.
+
+     */
+
     //Game Objects
     public Text errorMessage;
     public InputField commandEntry;
@@ -14,6 +24,7 @@ public class ConsoleCommands : MonoBehaviour
     public AudioClip typeClip;
     public AudioSource sfx;
     public GameObject commandPromptContainer;
+    public GameObject notesContainer;
 
     public GameObject antiCreateLoad;
 
@@ -41,7 +52,6 @@ public class ConsoleCommands : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return))
         {
             commandEntered();
-            sfx.Play();
         }
 
         if (Input.GetKeyDown(KeyCode.BackQuote))
@@ -60,7 +70,6 @@ public class ConsoleCommands : MonoBehaviour
                 else if (Input.GetKeyUp(KeyCode.Return))
                 {
                     commandEntered();
-                    sfx.Play();
                 }
             }
             if (commandEntry.isFocused == true && Input.anyKeyDown)
@@ -78,10 +87,10 @@ public class ConsoleCommands : MonoBehaviour
 
 public void commandEntered()
     {
-        errorMessage.text = "";
-
-        if (isFocused)
+        if (isFocused && !notesContainer.activeInHierarchy)
         {
+            errorMessage.text = "";
+            sfx.Play();
             //Roll
             if (commandEntry.text.ToLower().StartsWith("roll"))
             {
@@ -216,6 +225,11 @@ public void commandEntered()
                         errorMessage.text = "You gave too many entries for the command.  Please try again.";
                     }
                 }
+                else
+                {
+                    addOutput("You cannot create characters when you're in the middle of creating one...");
+                    errorMessage.text = "You cannot create characters when you're in the middle of creating one...";
+                }
             }
 
             //load
@@ -249,7 +263,8 @@ public void commandEntered()
                 }
                 else
                 {
-                    addOutput("This command cannot be performed at the current state.  Please exit character creation and try again.");
+                    addOutput("You cannot create or characters when you're in the middle of creating one...");
+                    errorMessage.text = "You cannot create or characters when you're in the middle of creating one...";
                 }
             }
 

@@ -16,6 +16,7 @@ public class gainExp : MonoBehaviour
     public GameObject loadScreen;
     public AudioSource sfx;
     public GameObject commandPromptContainer;
+    public GameObject noteContainer;
 
     public GameObject newChakraNature;
     public GameObject newFeat;
@@ -30,7 +31,7 @@ public class gainExp : MonoBehaviour
     {
         if (Input.anyKey)
         {
-            if (!commandPromptContainer.activeInHierarchy)
+            if (!commandPromptContainer.activeInHierarchy && !noteContainer.activeInHierarchy)
             {
                 if (!Input.GetKeyDown(KeyCode.Return))
                 {
@@ -39,7 +40,6 @@ public class gainExp : MonoBehaviour
                 else if (Input.GetKeyDown(KeyCode.Return))
                 {
                     checkLevel(true);
-                    sfx.Play();
                 }
             }
         }
@@ -49,43 +49,47 @@ public class gainExp : MonoBehaviour
 
     public void checkLevel(bool button)
     {
-        if (button)
+        if (!noteContainer.activeInHierarchy)
         {
-            try
+            if (button)
             {
-                player.exp += Int32.Parse(userInput.text);
+                try
+                {
+                    player.exp += Int32.Parse(userInput.text);
+                }
+                catch (FormatException)
+                {
+                    if (userInput.text != "")
+                        errorMessage.text = "Invalid.  Please enter a number value.";
+                }
+                sfx.Play();
             }
-            catch (FormatException)
-            {
-                if (userInput.text != "")
-                    errorMessage.text = "Invalid.  Please enter a number value.";
-            }
-        }
-        
-        if (player.exp > requiredXP[19])
-            player.exp = requiredXP[19];
 
-        for (int i = 0; i <= 19; i++)
-        {
-            if (i != 19)
+            if (player.exp > requiredXP[19])
+                player.exp = requiredXP[19];
+
+            for (int i = 0; i <= 19; i++)
             {
-                if (requiredXP[i] <= player.exp && requiredXP[i + 1] > player.exp)
+                if (i != 19)
+                {
+                    if (requiredXP[i] <= player.exp && requiredXP[i + 1] > player.exp)
+                    {
+                        newLevel = i + 1;
+                    }
+                }
+                else if (requiredXP[i] <= player.exp)
                 {
                     newLevel = i + 1;
                 }
             }
-            else if (requiredXP[i] <= player.exp)
-            {
-                newLevel = i + 1;
-            }
-        }
-        //player.exp = player.exp; //why did I do this..?
-        player.playerLevel = newLevel;
+            //player.exp = player.exp; //why did I do this..?
+            player.playerLevel = newLevel;
 
-        if (player.playerLevel > startingLevel)
-        {
-            print("Player level: " + player.playerLevel + "\n" + "Starting level:" + startingLevel);
-            levelUpPlayer(button);
+            if (player.playerLevel > startingLevel)
+            {
+                print("Player level: " + player.playerLevel + "\n" + "Starting level:" + startingLevel);
+                levelUpPlayer(button);
+            }
         }
     }
 

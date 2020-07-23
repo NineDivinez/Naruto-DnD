@@ -5,7 +5,7 @@ using UnityEngine;
 public class LoadPlayer : MonoBehaviour
 {
     //Game Objects
-    public string[] available = { "Fire", "Water", "Air", "Earth", "Lightning" };
+    public string[] available = { "Fire", "Water", "Wind", "Earth", "Lightning" };
     public PlayerStats player = new PlayerStats();
 
     //Variables

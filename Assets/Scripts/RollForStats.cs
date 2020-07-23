@@ -13,6 +13,7 @@ public class RollForStats : MonoBehaviour
     public List<int> used = new List<int>();
     public bool rolled = false;
     public int rollsRemaining = 3;
+    public bool increaseUsed = false;
 
     //Game Objects
     public PlayerStats player = new PlayerStats();
@@ -65,14 +66,14 @@ public class RollForStats : MonoBehaviour
         errorMessage.text = "";
         if (!rolled)
         {
+            increaseUsed = false;
             if (rollsRemaining > 0)
             {
                 if (rollsRemaining >= 3)
                 {
                     for (int i = 0; i <= 5; i++)
                     {
-                        int newRoll = Random.Range(4, 18);
-                        rolls.Add(newRoll);
+                        rolls.Add(statRoll());
                     }
                     print.text = "Rolls\n" +
             "First roll:        " + rolls[0] + "\n" +
@@ -96,8 +97,7 @@ public class RollForStats : MonoBehaviour
                 {
                     for (int i = 0; i <= 5; i++)
                     {
-                        int newRoll = Random.Range(4, 18);
-                        rolls[i] = newRoll;
+                        rolls[i] = statRoll();
                     }
 
                     str.options.Clear();
@@ -154,6 +154,45 @@ public class RollForStats : MonoBehaviour
             errorMessage.text = "You have already performed all your rolls!";
         }
     }
+
+    public int statRoll()
+    {
+        double finalRoll = 0;
+        int[] rolls = new int[4];
+        for (int i = 0; i < rolls.Length; i++)
+        {
+            rolls[i] = Random.Range(4000, 6000);
+        }
+
+        for (int i = 0; i < rolls.Length; i++)
+        {
+            for (int x = rolls.Length -1; x > 0; x--)
+            {
+                if (rolls[i] >= rolls[x])
+                {
+                    rolls[x] = 0;
+                    break;
+                }
+            }
+        }
+        
+        for (int i = 0; i < rolls.Length; i++)
+        {
+            finalRoll += rolls[i];
+        }
+
+        if (!increaseUsed && finalRoll <= 9)
+        {
+            finalRoll += 1;
+            increaseUsed = true;
+        }
+        if (finalRoll < 7)
+        {
+            finalRoll += 4;
+        }
+
+        return (int)Math.Ceiling(finalRoll /1000);
+    }    
 
     public void usedRoll()
     {

@@ -21,6 +21,7 @@ public class CharacterName : MonoBehaviour
     public LoadPlayer loadPlayer;
     public AudioSource sfx;
     public GameObject commandPromptContainer;
+    public GameObject notesContainer;
 
     //Variables
     public bool mainIsFocused;
@@ -76,7 +77,7 @@ public class CharacterName : MonoBehaviour
 
     void enterPressed()
     {
-        if (!commandPromptContainer.activeInHierarchy)
+        if (!commandPromptContainer.activeInHierarchy && !notesContainer.activeInHierarchy)
         {
             if (input.text.ToLower() == "dave")
             {
