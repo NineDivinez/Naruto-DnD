@@ -290,8 +290,9 @@ public void commandEntered()
             {
                 string deleteCharacter = commandEntry.text.Remove(0, 7);
                 string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
-                string playerLocation = "";
-                playerLocation = Path.Combine(directory, deleteCharacter + ".save");
+                string playerLocation = Path.Combine(directory, deleteCharacter + ".save");
+                string playerNotes = Path.Combine(directory, deleteCharacter + ".notes");
+                string playerTraits = Path.Combine(directory, deleteCharacter + ".traits");
 
                 if (player.playerName.ToLower() == deleteCharacter.ToLower())
                 {
@@ -302,6 +303,8 @@ public void commandEntered()
                     if (System.IO.File.Exists(playerLocation))
                     {
                         File.Delete(playerLocation);
+                        File.Delete(playerNotes);
+                        File.Delete(playerTraits);
                         addOutput($"Now deleting {deleteCharacter}");
                     }
                     else

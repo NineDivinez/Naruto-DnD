@@ -116,7 +116,6 @@ public class SaveNotesStats : MonoBehaviour
     {
         mods();
         specialistSpecific();
-        displayAll();
     }
 
     public void displayAll()
@@ -135,8 +134,11 @@ public class SaveNotesStats : MonoBehaviour
 
         string uniqueTraitsLocation = player.playerName + ".traits";
         string saveLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
-        fileCheck(Path.Combine(saveLocation, uniqueTraitsLocation));
-        
+
+        if (!File.Exists(Path.Combine(saveLocation, uniqueTraitsLocation)))
+        {
+            System.IO.File.WriteAllLines(Path.Combine(saveLocation, uniqueTraitsLocation), format);
+        }
 
         string line;
 
@@ -170,13 +172,21 @@ public class SaveNotesStats : MonoBehaviour
         }
 
         string notesSave = player.playerName + ".notes";
-        fileCheck(Path.Combine(saveLocation, notesSave));
-
-        System.IO.StreamReader noteReader = new System.IO.StreamReader(Path.Combine(saveLocation, notesSave));
         string notesLines = "";
-        while((line = noteReader.ReadLine()) != null)
+
+        if (!File.Exists(Path.Combine(saveLocation, uniqueTraitsLocation)))
         {
-            notesLines += line + "\n";
+            string[] blankNotes = { "" };
+            System.IO.File.WriteAllLines(Path.Combine(saveLocation, uniqueTraitsLocation), blankNotes);
+        }
+        else
+        {
+            System.IO.StreamReader noteReader = new System.IO.StreamReader(Path.Combine(saveLocation, notesSave));
+            
+            while ((line = noteReader.ReadLine()) != null)
+            {
+                notesLines += line + "\n";
+            }
         }
         notes.text = notesLines;
     }    
@@ -191,13 +201,5 @@ public class SaveNotesStats : MonoBehaviour
         string uniqueTraitsLocation = player.playerName + ".traits";
         string[] traitSave = { format[9] + age.text, format[10] + hairColor.text, format[11] + eyeColor.text, format[12] + height.text, format[13] + weight.text, format[14] + village.text };
         System.IO.File.WriteAllLines(Path.Combine(saveLocation, uniqueTraitsLocation), traitSave);
-    }
-
-    public void fileCheck(string file)
-    {
-        if (!File.Exists(file))
-        {
-            System.IO.File.WriteAllLines(file, format);
-        }
     }
 }
