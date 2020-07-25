@@ -10,7 +10,8 @@ public class loadImage : MonoBehaviour
 
     public PlayerStats player = new PlayerStats();
     public ConsoleCommands output = new ConsoleCommands();
-    void Start()
+
+    public void reloadImage()
     {
         string directory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
         string imageLocation = Path.Combine(directory, player.playerName + ".jpg");

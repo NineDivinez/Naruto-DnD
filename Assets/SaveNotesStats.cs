@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text;
 
 public class SaveNotesStats : MonoBehaviour
 {
@@ -176,6 +177,7 @@ public class SaveNotesStats : MonoBehaviour
         string notesSave = player.playerName + ".notes";
         string notesLines = "";
 
+
         if (File.Exists(Path.Combine(saveLocation, notesSave)) == false)
         {
             string[] blankNotes = { "" };
@@ -205,10 +207,19 @@ public class SaveNotesStats : MonoBehaviour
             string uniqueTraitsLocation = player.playerName + ".traits";
             string[] traitSave = { format[9] + age.text, format[10] + hairColor.text, format[11] + eyeColor.text, format[12] + height.text, format[13] + weight.text, format[14] + village.text };
             System.IO.File.WriteAllLines(Path.Combine(saveLocation, uniqueTraitsLocation), traitSave);
+
+            resetEntries();
         }
         else
         {
+            string saveLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
+            string notesSave = player.playerName + ".notes";
             
+            string[] blankNotes = { "" };
+            System.IO.File.WriteAllLines(Path.Combine(saveLocation, notesSave), blankNotes);
+
+            string uniqueTraitsLocation = player.playerName + ".traits";
+            System.IO.File.WriteAllLines(Path.Combine(saveLocation, uniqueTraitsLocation), format);
         }
     }
 
@@ -222,5 +233,41 @@ public class SaveNotesStats : MonoBehaviour
         {
             return false;
         }
+    }
+
+    public void resetEntries()
+    {
+        notes.text = "";
+        age.text = "";
+        hairColor.text = "";
+        eyeColor.text = "";
+        height.text = "";
+        weight.text = "";
+        village.text = "";
+        main.text = arrayToString(format);
+
+        hitDie = 0;
+        numberOfHitDie = 0;
+        movementSpeed = 0;
+        hitpointDie = 0;
+
+        strMod = 0;
+        intMod = 0;
+        dexMod = 0;
+        wisMod = 0;
+        conMod = 0;
+        charMod = 0;
+    }
+
+    string arrayToString(string[] array)
+    {
+        StringBuilder builder = new StringBuilder();
+        foreach (string value in array)
+        {
+            builder.Append(value);
+            builder.Append('.');
+        }
+
+        return builder.ToString();
     }
 }
