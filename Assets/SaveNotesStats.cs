@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class SaveNotesStats : MonoBehaviour
 {
+    //These are the things users can put entries in to.
     public InputField notes;
     public InputField age;
     public InputField hairColor;
@@ -12,6 +13,7 @@ public class SaveNotesStats : MonoBehaviour
     public InputField height;
     public InputField weight;
     public InputField village;
+
     public Text main;
 
     int hitDie;
@@ -174,10 +176,10 @@ public class SaveNotesStats : MonoBehaviour
         string notesSave = player.playerName + ".notes";
         string notesLines = "";
 
-        if (!File.Exists(Path.Combine(saveLocation, uniqueTraitsLocation)))
+        if (File.Exists(Path.Combine(saveLocation, notesSave)) == false)
         {
             string[] blankNotes = { "" };
-            System.IO.File.WriteAllLines(Path.Combine(saveLocation, uniqueTraitsLocation), blankNotes);
+            System.IO.File.WriteAllLines(Path.Combine(saveLocation, notesSave), blankNotes);
         }
         else
         {
@@ -193,13 +195,32 @@ public class SaveNotesStats : MonoBehaviour
 
     public void saveAll()
     {
-        string notesSave = player.playerName + ".notes";
-        string saveLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
-        string[] notesData = { notes.text };
-        System.IO.File.WriteAllLines(Path.Combine(saveLocation, notesSave), notesData);
+        if (userHasInput())
+        {
+            string notesSave = player.playerName + ".notes";
+            string saveLocation = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Divinity10/NarutoDnD/Game Saves");
+            string[] notesData = { notes.text };
+            System.IO.File.WriteAllLines(Path.Combine(saveLocation, notesSave), notesData);
 
-        string uniqueTraitsLocation = player.playerName + ".traits";
-        string[] traitSave = { format[9] + age.text, format[10] + hairColor.text, format[11] + eyeColor.text, format[12] + height.text, format[13] + weight.text, format[14] + village.text };
-        System.IO.File.WriteAllLines(Path.Combine(saveLocation, uniqueTraitsLocation), traitSave);
+            string uniqueTraitsLocation = player.playerName + ".traits";
+            string[] traitSave = { format[9] + age.text, format[10] + hairColor.text, format[11] + eyeColor.text, format[12] + height.text, format[13] + weight.text, format[14] + village.text };
+            System.IO.File.WriteAllLines(Path.Combine(saveLocation, uniqueTraitsLocation), traitSave);
+        }
+        else
+        {
+            
+        }
+    }
+
+    public bool userHasInput()
+    {
+        if (notes.text != "" || age.text != "" || hairColor.text != "" || eyeColor.text != "" || height.text != "" || weight.text != "" || village.text != "")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
