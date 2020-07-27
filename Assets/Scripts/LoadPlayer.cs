@@ -8,8 +8,6 @@ public class LoadPlayer : MonoBehaviour
     public string[] available = { "Fire", "Water", "Wind", "Earth", "Lightning" };
     public PlayerStats player = new PlayerStats();
 
-    public loadImage imageLoader = new loadImage();
-
     //Variables
     public static string[] formats = {
             "Name:           ",
@@ -37,7 +35,7 @@ public class LoadPlayer : MonoBehaviour
             print("The user was successfully located!");
             string line;
 
-            imageLoader.reloadImage();
+            ImageLoader.Instance.reloadImage();
 
             System.IO.StreamReader file = new System.IO.StreamReader(playerLocation);
             while ((line = file.ReadLine()) != null)
