@@ -5,6 +5,21 @@ using UnityEngine.UI;
 
 public class SelectJob : MonoBehaviour
 {
+    public static SelectJob instance = null;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     //Game Objects
     public PlayerStats player = new PlayerStats();
     public Dropdown jobSelector;

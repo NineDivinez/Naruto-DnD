@@ -29,6 +29,7 @@ public class CharacterName : MonoBehaviour
     void Start()
     {
         errorMessage.text = "";
+        input.ActivateInputField();
     }
 
     void Update()

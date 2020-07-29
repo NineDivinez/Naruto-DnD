@@ -98,6 +98,7 @@ public void commandEntered()
                 int dice = Int32.Parse(entries[1]);
                 int times = 1;
                 int mods = 0;
+                int total = 0;
 
                 string format = "Rolled:\n";
 
@@ -124,8 +125,9 @@ public void commandEntered()
                         }
                         else
                         {
-                            format += rolled[i].ToString();
+                            format += rolled[i].ToString() + $"\nFor a total of {total}";
                         }
+                        total += rolled[i];
                     }
 
                     output.text = format;
@@ -426,6 +428,7 @@ public void commandEntered()
                     "Directory <Name> (Displays the directory of the name entered.)\n\n" +
                     "Delete <character>\n\n" +
                     "list (Lists all saved characters)\n\n" +
+                    "Clear (Clears the console of it's text)\n\n" +
                     "help image (instructions on how to upload your own image)");
                 }
                 else if (commandEntry.text.Remove(0, 5).ToLower() == "image")
@@ -433,6 +436,59 @@ public void commandEntered()
                     output.text = ("To add an image for your character, enter the command: directory <name> and go to that directory.\n\n" +
                         "If the image you have is not already in a jpg format, please convert it as such and rename the image to your character name.\n\n" +
                         "After that, place the image in the directory.  You may now reload your character with the new image!");
+                }
+                else if (commandEntry.text.Remove(0, 5).ToLower() == "roll")
+                {
+                    addOutput("Performed as: Roll <Dice sides> <Number of Dice> <Modifier>.\n" +
+                        "Will roll the sided dice for the specified amount and display them individually.  It will also add any modifiers to each roll and display the total.");
+                }
+                else if (commandEntry.text.Remove(0, 5).ToLower() == "godmode")
+                {
+                    addOutput("Performed as: GodMode" +
+                        "Keep death at bay with the all new Easy Mode™!");
+                }
+                else if (commandEntry.text.Remove(0, 5).ToLower() == "create")
+                {
+                    addOutput("Performed as: Create <Name> <specialization> <EXP> <Chakra Affinity> <Chakra Nature levels (Fire:level,Water:level,Air:level,Earth:level,Lighting:level)> <Strength> <Intelligence> <Dexterity> <Constitution> <Wisdom> <Charisma>\n" +
+                        "Most entries are required and must be in order, but not all. Each entry is to be seperated by a space.\n" +
+                        "After typing the command itself, \"Create\", enter in your desired name without spaces.\n" +
+                        "Then enter your Specialization. This is not restricted to the standard ones.  It is to allow for custom characters.\n" +
+                        "The next field is EXP.  This can be any number above 0.  If it is over the max leve, it will auto adjust to normalize this.\n" +
+                        "Chakra Afinity is to be entered like <type:level>.  If the character has multiple, seperate the chakra natures by a comma. This does not need to be in any special order.\n" +
+                        "The next 6 entries will be just a straight number in the order of: Strength, Intelligence, Dexterity, Constitution, Wisdom, and Charisma.");
+                }
+                else if (commandEntry.text.Remove(0, 5).ToLower() == "load")
+                {
+                    addOutput("Performed as: Load <name>\n" +
+                        "This will load the character with the specified name.  Will not work if you are already creating a character!");
+                }
+                else if (commandEntry.text.Remove(0, 5).ToLower() == "kill")
+                {
+                    addOutput("Performed as: Kill <target>\n" +
+                        "Is another player annoying you? How about your GM? Maybe, you're the gm and just want everyone else dead.\n" +
+                        "Well if any of this, or anyting similar apply, then this product is for you!\n" +
+                        "Now introducing... AnnoyanceBGone™!");
+                }
+                else if (commandEntry.text.Remove(0, 5).ToLower() == "directory")//™
+                {
+                    addOutput("Performed as: Directory <name>\n" +
+                        "Tests if the save exists.  If not, it will display which parts of the directory exist and which ones do not.\n" +
+                        "If the save does exist, it will tell you where on your computer the save is located.");
+                }
+                else if (commandEntry.text.Remove(0, 5).ToLower() == "delete")
+                {
+                    addOutput("Performed as: Delete <name>\n" +
+                        "Deletes the specified character if it exists.  If it does not, you will be informed that the deed is already done.");
+                }
+                else if (commandEntry.text.Remove(0, 5).ToLower() == "list")
+                {
+                    addOutput("Performed as: List\n" +
+                        "Will search the save location and display all the currently existing saves.");
+                }
+                else if (commandEntry.text.Remove(0, 5).ToLower() == "clear")
+                {
+                    addOutput("Performed as: Clear\n" +
+                        "Clears the command console of all text.");
                 }
                 else
                 {
@@ -456,6 +512,11 @@ public void commandEntered()
                 {
                     addOutput("This is a test!");
                 }
+            }
+
+            else if (commandEntry.text.ToLower().StartsWith("clear"))
+            {
+                output.text = "Console cleared.";
             }
 
             //Invalid

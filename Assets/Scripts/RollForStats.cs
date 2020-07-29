@@ -8,6 +8,21 @@ using Random = UnityEngine.Random;
 
 public class RollForStats : MonoBehaviour
 {
+
+    public static RollForStats instance = null;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
     //Variables
     public List<int> rolls = new List<int>();
     public List<int> used = new List<int>();

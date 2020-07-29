@@ -5,6 +5,21 @@ using UnityEngine.UI;
 
 public class ChakraNatureSelector : MonoBehaviour
 {
+    public static ChakraNatureSelector instance = null;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     //Game Objects
     public GameObject[] chakraNature = { };
 
