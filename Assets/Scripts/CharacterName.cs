@@ -47,7 +47,7 @@ public class CharacterName : MonoBehaviour
                     }
                 }
 
-                else if (Input.GetKey(KeyCode.Return))
+                else if (Input.GetKeyDown(KeyCode.Return))
                 {
                     enterPressed();
                 }

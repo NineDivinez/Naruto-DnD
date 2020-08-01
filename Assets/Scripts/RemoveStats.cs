@@ -10,6 +10,7 @@ public class RemoveStats : MonoBehaviour
     {
         player.playerName = ""; player.specialization = ""; player.exp = 0; player.chakraAffinity = "";
         player.strength = 0; player.intelligence = 0; player.dexterity = 0; player.wisdom = 0; player.charisma = 0;
+        RollForStats.instance.rollsRemaining = 3; RollForStats.instance.rolled = false;
 
         for (int i = 0; i < 5; i++)
         {
